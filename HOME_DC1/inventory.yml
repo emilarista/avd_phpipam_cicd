@@ -1,0 +1,63 @@
+---
+all:
+  children:
+    CVP:
+      hosts:
+        cv_ztp:
+          ansible_host: 10.20.20.20
+          ansible_user: root
+          ansible_password: somepassword
+          ansible_connection: paramiko
+        cv_server:
+          ansible_httpapi_host: 10.20.20.20
+          ansible_host: 10.20.20.20
+          ansible_user: cvpadmin
+          ansible_password: somepassword
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+          ansible_httpapi_port: 443
+          # Configuration to get Virtual Env information
+          ansible_python_interpreter: $(which python)
+    # DC1_Fabric - EVPN Fabric running in home lab
+    DC1:
+      children:
+        DC1_TENANTS_NETWORKS:
+          children:
+            DC1_LEAFS:
+        DC1_SERVERS:
+          children:
+            DC1_LEAFS:
+        DC1_FABRIC:
+          children:
+            DC1_SPINES:
+              hosts:
+                spine1:
+                  ansible_host: 10.30.30.101
+                spine2:
+                  ansible_host: 10.30.30.102
+            DC1_LEAFS:
+              children:
+                DC1_L3LEAFS:
+                  children:
+                    leaf1:
+                      hosts:
+                        leaf1a:
+                          ansible_host: 10.30.30.103
+                        leaf1b:
+                          ansible_host: 10.30.30.104
+                    leaf2:
+                      hosts:
+                        leaf2a:
+                          ansible_host: 10.30.30.105
+                        leaf2b:
+                          ansible_host: 10.30.30.106
+                    leaf3:
+                      hosts:
+                        leaf3a:
+                          ansible_host: 10.30.30.107
+                        leaf3b:
+                          ansible_host: 10.30.30.108
+
+

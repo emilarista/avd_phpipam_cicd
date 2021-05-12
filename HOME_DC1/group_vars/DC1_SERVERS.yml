@@ -1,0 +1,40 @@
+---
+# This file is maintained by avd_sync.py script.
+# Port profiles may be edited manually, but servers will be overwritten on next run.
+port_profiles:
+  APP_PROFILE_1: {mode: access, spanning_tree_portfast: edge, vlans: '80'}
+  APP_PROFILE_3: {mode: access, spanning_tree_portfast: edge, vlans: '13'}
+  DEFAULT: {mode: access, vlans: '2'}
+  ESXI_PROFILE: {mode: trunk, native_vlan: '61', spanning_tree_portfast: edge, vlans: 1-200}
+  STORAGE_PROFILE_1: {mode: access, spanning_tree_portfast: edge, vlans: '41'}
+  STORAGE_PROFILE_2: {mode: access, spanning_tree_portfast: edge, vlans: '42'}
+  TENANT_A_APP_ROUTER: {mode: trunk, spanning_tree_portfast: edge, vlans: 1001-1003}
+servers:
+  Appserver_1:
+    adapters:
+    - profile: APP_PROFILE_1
+      server_ports: [Eth0]
+      switch_ports: [Ethernet8]
+      switches: [leaf1a]
+    rack: RackA1
+  Appserver_4:
+    adapters:
+    - profile: APP_PROFILE_1
+      server_ports: [Eth0]
+      switch_ports: [Ethernet8]
+      switches: [leaf1b]
+    rack: RackA1
+  ESXi_1:
+    adapters:
+    - profile: ESXI_PROFILE
+      server_ports: [Eth0, Eth1]
+      switch_ports: [Eth5, Eth5]
+      switches: [leaf1a, leaf1b]
+    rack: RackA1
+  ESXi_2:
+    adapters:
+    - profile: ESXI_PROFILE
+      server_ports: [Eth0, Eth1]
+      switch_ports: [Eth6, Eth6]
+      switches: [leaf1a, leaf1b]
+    rack: RackA1

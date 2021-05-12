@@ -1,0 +1,12 @@
+---
+- name: Validate fabric state
+  hosts: DC1_FABRIC
+  connection: httpapi
+  gather_facts: false
+  collections:
+    - arista.avd
+
+  tasks:
+    - name: Run validation tasks
+      import_role:
+        name: arista.avd.eos_validate_state

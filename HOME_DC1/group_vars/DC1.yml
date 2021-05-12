@@ -1,0 +1,42 @@
+---
+# Validation lab
+# local users
+local_users:
+  # user1:
+  #   privilege: 15
+  #   role: network-admin
+  #   sha512_password: "..."
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$WRH0YV9I461XA.qn$BYsYGThSIHOh4ic8qdjnHWq9Zi/l0W8Ws4DZ5Y5yI3hBBWGP03W3ggXWdY7MTqVA8plRvaazG/U8CeMPkT5aE."
+
+# Cloud Vision server information
+cvp_instance_ip: 10.20.20.20
+cvp_ingestauth_key: 'telarista'
+
+# OOB Management network default gateway.
+mgmt_gateway: 10.30.30.1
+
+# dns servers.
+name_servers:
+  - 10.20.20.13
+  - 8.8.8.8
+
+# NTP Servers IP or DNS
+# First NTP server will be preferred
+# Sourced from Managment VRF
+ntp_servers:
+  - 0.se.pool.ntp.org
+  - 1.se.pool.ntp.org
+
+# Stuff for validate_state
+ansible_user: cvpadmin
+ansible_password: somepassword
+ansible_network_os: eos
+ansible_become: yes
+ansible_become_method: enable
+validation_mode_loose: true
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false

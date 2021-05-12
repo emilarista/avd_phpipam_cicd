@@ -1,0 +1,78 @@
+---
+ztp:
+  default:
+    registration: 'http://10.20.20.20/ztp/bootstrap'
+    gateway: 10.30.30.1
+    nameservers:
+      - '10.20.20.13'
+  general:
+    subnets:
+      - network: 10.30.30.0
+        netmask: 255.255.255.0
+        gateway: 10.30.30.1
+        nameservers:
+          - '10.20.20.13'
+        start: 10.30.30.100
+        end: 10.30.30.200
+        lease_time: 300
+  clients:
+    # AVD/CVP Integration
+    - name: spine1
+      mac: "50:00:00:01:00:00"
+      ip4: 10.30.30.101
+    - name: spine2
+      mac: "50:00:00:02:00:00"
+      ip4: 10.30.30.102
+    - name: leaf1a
+      mac: "50:00:00:03:00:00"
+      ip4: 10.30.30.103
+    - name: leaf1b
+      mac: "50:00:00:04:00:00"
+      ip4: 10.30.30.104
+    - name: leaf2a
+      mac: "50:00:00:05:00:00"
+      ip4: 10.30.30.105
+    - name: leaf2b
+      mac: "50:00:00:06:00:00"
+      ip4: 10.30.30.106
+    - name: leaf3a
+      mac: "50:00:00:07:00:00"
+      ip4: 10.30.30.107
+    - name: leaf3b
+      mac: "50:00:00:08:00:00"
+      ip4: 10.30.30.108
+
+
+CVP_DEVICES:
+  leaf1a:
+    name: 'leaf1a'
+    parentContainerName: leaf1
+    imageBundle: []  # Not yet supported
+  leaf1b:
+    name: 'leaf1b'
+    parentContainerName: leaf1
+    imageBundle: []  # Not yet supported
+  leaf2a:
+    name: 'leaf2a'
+    parentContainerName: leaf2
+    imageBundle: []  # Not yet supported
+  leaf2b:
+    name: 'leaf2b'
+    parentContainerName: leaf2
+    imageBundle: []  # Not yet supported
+  leaf3a:
+    name: 'leaf3a'
+    parentContainerName: leaf3
+    imageBundle: []  # Not yet supported
+  leaf3b:
+    name: 'leaf3b'
+    parentContainerName: leaf3
+    imageBundle: []  # Not yet supported
+  spine1:
+    name: 'spine1'
+    parentContainerName: DC1_SPINES
+    imageBundle: []  # Not yet supported
+  spine2:
+    name: 'spine2'
+    parentContainerName: DC1_SPINES
+    imageBundle: []  # Not yet supported

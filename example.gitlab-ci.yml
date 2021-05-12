@@ -1,0 +1,77 @@
+---
+stages:
+  - lint
+  - validate
+  - prepare
+  - test
+  - deploy
+  - state_check
+  - upload_results
+
+variables:
+    GIT_STRATEGY: clone
+
+yamllint:
+  stage: lint
+  tags:
+    - verify
+  script:
+    - "yamllint HOME_DC1/group_vars/*  -d 'line-length: disable'"
+    - "yamllint HOME_DC1/host_vars/*  -d 'line-length: disable'"
+
+ansiblelint_PLAY_evpn_deploy:
+  stage: lint
+  tags:
+    - verify
+  script:
+    - ansible-lint HOME_DC1/PLAY_evpn_deploy.yml
+    - ansible-lint HOME_DC1/PLAY_evpn_validate_state.yml
+
+validate_input:
+  stage: validate
+  tags:
+    - verify
+  script:
+    # Simple python script that checks some stuff in the abstracted data model and raises exceptions if it finds something wonky.
+    - "./vars-validator.py"
+
+install_prereqs:
+  stage: prepare
+  tags:
+    - prepare
+  script:
+    - ansible-galaxy collection install arista.avd
+    - ansible-galaxy collection install arista.cvp
+
+test_deployment:
+  stage: test
+  tags:
+    - test
+  script:
+    # Execute production playbook on a test fabric, using a python3 virtual environment to run in.
+    - source /opt/scripts/ansible/avd_dc1/.venv/bin/activate
+    - cd HOME_DC1
+    - ansible-playbook PLAY_evpn_deploy.yml -i inventory.yml
+  artifacts:
+    paths:
+      - HOME_DC1/intended/
+      - HOME_DC1/documentation/
+    # Latest artifacts will be kept indefinitely in gitlab, even after "expiring"
+    expire_in: 1 week
+
+
+run_validation:
+  stage: state_check
+  tags:
+    - run_validation
+  script:
+    # Execute the eos_validate_state role to check the status of the fabric
+    - source /opt/scripts/ansible/avd_dc1/.venv/bin/activate
+    - cd HOME_DC1
+    - mkdir reports
+    - ansible-playbook PLAY_evpn_validate_state.yml -i inventory_testenv.yml --tags "bgp_check,ntp,lldp_topology"
+  artifacts:
+    paths:
+      - HOME_DC1/reports/
+    # Latest artifacts will be kept indefinitely in gitlab, even after "expiring"
+    expire_in: 1 week

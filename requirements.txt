@@ -1,0 +1,8 @@
+ansible
+treelib
+netaddr
+cvprac
+ipaddress
+urllib3
+yaml
+virtualenv
